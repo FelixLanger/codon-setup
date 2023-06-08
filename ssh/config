@@ -1,0 +1,34 @@
+Host *
+    ServerAliveCountMax 10
+    ServerAliveInterval 15
+    ForwardAgent yes
+    ForwardX11 yes
+    Compression yes
+    ForwardX11Timeout 7d
+
+# comment this if you do not want to use automatic VPN detection
+Match host codon !exec "ping -q -c 1 codon-login.ebi.ac.uk 2> /dev/null"
+    ProxyJump gate
+
+
+Host codon
+    Hostname codon-login.ebi.ac.uk
+    User YOURUSERNAME
+    IdentityFile ~/.ssh/ebi_rsa
+    DynamicForward 8877
+    ForwardX11Trusted yes
+    # ProxyJump gate # add if no automatic VPN detection is done
+
+
+Host gate
+    Hostname ligate.ebi.ac.uk
+    User YOURUSERNAME
+    IdentityFile ~/.ssh/ebi_rsa
+
+
+Host github.com
+    Hostname github.com
+    ForwardX11 no
+    ForwardX11Trusted no
+    User GITHUBUSERNAME
+    IdentityFile ~/.ssh/github_rsa
